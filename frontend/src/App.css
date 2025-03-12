@@ -1,0 +1,15 @@
+.services-slideshow {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slideshow-container {
+  display: flex;
+  width: 100%;
+}
+
+.slideshow-image {
+  width: 80%;
+  margin: 0 auto;
+  object-fit: cover; /* Maintain aspect ratio */
+}
