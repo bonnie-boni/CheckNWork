@@ -42,7 +42,7 @@ const Register = () => {
           <label className="form-label">Username</label> <br />
           <input
             type="text"
-            id='login-input'
+            id='username-input'
             className="form-control"
             placeholder="Username"
             value={username}
@@ -55,7 +55,7 @@ const Register = () => {
           <label className="form-label">Email</label> <br />
           <input
             type="email"
-            id='login-input'
+            id='email-input'
             className="form-control"
             placeholder="Email"
             value={email}
@@ -68,7 +68,7 @@ const Register = () => {
           <label className="form-label">Password</label> <br />
           <input
             type="password"
-            id='login-input'
+            id='password-input'
             className="form-control"
             placeholder="Password"
             value={password}

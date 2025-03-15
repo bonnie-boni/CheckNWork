@@ -1,18 +1,66 @@
 import express from 'express';
+import bcrypt from 'bcryptjs';
 const router = express.Router();
 import PostedJob from '../models/postedjobs.js';
-import User from '../models/user.js';
+import User from '../models/user.js'; // Import the User model
+import jwt from 'jsonwebtoken'; // Import jsonwebtoken
+import sgMail from '@sendgrid/mail';
 
-router.get('/myjobs/:username', async (req, res) => {
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Registration endpoint
+router.post('/register', async (req, res) => {
   try {
-    const { username } = req.params;
-    const user = await User.findOne({ username });
+    const { username, password, email } = req.body;
 
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already taken' });
     }
 
-    const jobs = await PostedJob.find({ userid: user._id });
+    // Create a new user
+    const user = new User({ username, password, email });
+    await user.save(); // Await the save operation
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error)  {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Failed to register user' });
+  }
+});
+
+// Login endpoint
+router.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Find the user by username
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Check if the password is correct
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Create a token
+    const token = jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET || 'your-secret-key');
+
+    // Send the token in the response
+    res.status(200).json({ message: 'Login successful', token });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Failed to login' });
+  }
+});
+
+router.get('/postedjobs', async (req, res) => {
+  try {
+    const jobs = await PostedJob.find({ completed: false });
     res.send(jobs);
   } catch (error) {
     res.status(500).send(error);
@@ -24,7 +72,7 @@ router.post('/myjobs', auth, async (req, res) => {
     const { ...jobData } = req.body;
     const userid = req.user._id;
     const username = req.user.username;
-    const postedJob = new PostedJob({ ...jobData, userid: req.user._id, username });
+    const postedJob = new PostedJob({ ...jobData, userid: req.user._id, username, completed: false });
     await postedJob.save();
     res.status(201).send(postedJob);
   } catch (error) {
@@ -32,48 +80,44 @@ router.post('/myjobs', auth, async (req, res) => {
   }
 });
 
-router.get('/myjobs', async (req, res) => {
+router.get('/myjobs', auth, async (req, res) => {
   try {
-    const jobs = await PostedJob.find({});
+    const userid = req.user._id;
+    const jobs = await PostedJob.find({ userid: userid });
     res.send(jobs);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-import nodemailer from 'nodemailer';
-
-// Email configuration
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
 router.post('/send-email', async (req, res) => {
   try {
     const { to, subject, text } = req.body;
 
-    const mailOptions = {
+    const msg = {
+      to: to,
       from: process.env.EMAIL_USER,
-      to,
-      subject,
-      text,
+      subject: subject,
+      text: text,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email sent');
+        res.send({ message: 'Email sent successfully!' });
+      })
+      .catch((error) => {
         console.error('Error sending email:', error);
-        return res.status(500).send({ error: 'Failed to send email' });
-      }
-      console.log('Email sent:', info.response);
-      res.send({ message: 'Email sent successfully!' });
-    });
+        console.error('Error details:', error.message);
+        console.error('Error stack:', error.stack);
+        return res.status(500).send({ error: 'Failed to send email', details: error.message });
+      });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).send({ error: 'Failed to send email' });
+    console.error('Error details:', error.message);
+    console.error('Error stack:', error.stack);
+    res.status(500).send({ error: 'Failed to send email', details: error.message });
   }
 });
 

@@ -4,7 +4,7 @@ const OngoingTaskCard = ({ job }) => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/postedjobs/${job._id}`, {
+      const response = await fetch(`http://localhost:5000/myjobs/${job._id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -28,7 +28,7 @@ const OngoingTaskCard = ({ job }) => {
   const handleComplete = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/postedjobs/${job._id}/complete`, {
+      const response = await fetch(`http://localhost:5000/myjobs/${job._id}/complete`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -57,9 +57,11 @@ const OngoingTaskCard = ({ job }) => {
       <p>Willing to pay: {job.willingToPay}</p>
       <p>Location: {job.location}</p>
       <p>Posted on: {new Date(job.datePosted).toLocaleDateString()}</p>
-      <span className="ongoing-tag">Ongoing</span>
-      <button className="remove-button" onClick={handleDelete}>Remove</button>
+      <span className="ongoing-tag">Ongoing</span> <br /><br />
+      <div className="buttons">
       <button className="completed-button" onClick={handleComplete}>Completed</button>
+        <button className="remove-button" onClick={handleDelete}>Remove</button>
+      </div>
     </div>
   );
 };

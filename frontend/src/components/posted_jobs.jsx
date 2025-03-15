@@ -6,17 +6,11 @@ import Navbar from './Navbar';
 
 const PostedJobs = () => {
   const [jobs, setJobs] = useState([]);
-  const username = localStorage.getItem('username'); // Get the username from local storage
 
   useEffect(() => {
     const fetchPostedJobs = async () => {
       try {
-        const token = localStorage.getItem('token'); // Get the token from local storage
-        const response = await fetch(`http://localhost:5000/postedjobs/${username}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`, // Include the token in the header
-          },
-        });
+        const response = await fetch('http://localhost:5000/postedjobs');
         const data = await response.json();
         setJobs(data);
       } catch (error) {
@@ -25,7 +19,7 @@ const PostedJobs = () => {
     };
 
     fetchPostedJobs();
-  }, [username]);
+  }, []);
 
   return (
     <>

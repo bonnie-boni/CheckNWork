@@ -2,14 +2,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 10% 0 10%;
 }
 
 .completed-task-card {
   border: 1px solid #ccc;
   padding: 10px;
+  display: flex;
   margin: 10px;
   width: 300px;
   text-align: center;
+  border-radius: 20px;
+}
+
+.completed-task-card img{
+  width: 100%;
+  border-radius: 20px;
 }
 
 .ongoing-task-card {
@@ -18,8 +26,16 @@
   margin: 10px;
   width: 300px;
   text-align: center;
+  border-radius: 20px;
 }
-
+.ongoing-task-card img{
+  width: 100%;
+  border-radius: 20px;
+}
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
 .remove-button {
   background-color: red;
   color: white;

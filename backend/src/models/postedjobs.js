@@ -30,6 +30,10 @@ const postedJobSchema = new mongoose.Schema({
   datePosted: {
     type: Date,
     default: Date.now
+  },
+  completed: {
+    type: Boolean,
+    default: false
   }
 });
 

@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
 const auth = async (req, res, next) => {
-  try {
+   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, 'your-secret-key'); // Replace with your actual secret key
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
     const user = await User.findOne({ _id: decoded._id });
 
     if (!user) {

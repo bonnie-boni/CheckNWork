@@ -43,7 +43,7 @@ const Login = () => {
           <label className="form-label">Username</label> <br />
           <input
             type="text"
-            id='login-input'
+            id='username-input'
             className="form-control"
             placeholder="Username"
             value={username}
@@ -55,7 +55,7 @@ const Login = () => {
           <label className="form-label">Password</label> <br />
           <input
             type="password"
-            id='login-input'
+            id='password-input'
             className="form-control"
             placeholder="Password"
             value={password}

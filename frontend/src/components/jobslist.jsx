@@ -10,11 +10,10 @@ const Jobslist = () => {
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
-        const username = localStorage.getItem('username');
-        const response = await fetch(`http://localhost:5000/myjobs/${username}`);
+        const response = await fetch('http://localhost:5000/postedjobs');
         const data = await response.json();
-        console.log('Fetched jobs:', data);
         setAppliedJobs(data);
+        console.log('Fetched jobs:', data);
         console.log("Jobslist appliedJobs:", appliedJobs);
       } catch (error) {
         console.error('Error:', error);

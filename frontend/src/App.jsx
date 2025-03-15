@@ -9,6 +9,7 @@ import NotFound from "./components/NotFound";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import MyJobs from "./components/my_jobs";
+import BusinessVerifier from "./components/BusinessVerifier";
 import { Routes, Route } from 'react-router-dom'; // Import necessary components from react-router-dom
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/myjobs" element={<MyJobs />} /> {/* Route for the MyJobs component */}
         <Route path="/login" element={<Login />} /> {/* Route for the Login component */}
         <Route path="/register" element={<Register />} /> {/* Route for the Register component */}
+        <Route path="/business-verifier" element={<BusinessVerifier />} />
         <Route path="*" element={<NotFound />} /> {/* Route for the Not Found component */}
         
       </Routes>

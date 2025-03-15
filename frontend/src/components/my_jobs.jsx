@@ -6,15 +6,16 @@ import Navbar from './Navbar';
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
-  const username = localStorage.getItem('username'); // Get the username from local storage
 
   useEffect(() => {
     const fetchMyJobs = async () => {
       try {
-        const token = localStorage.getItem('token'); // Get the token from local storage
-        const response = await fetch(`http://localhost:5000/myjobs/${username}`, {
+        const token = localStorage.getItem('token');
+        const username = localStorage.getItem('username');
+        const response = await fetch(`http://localhost:5000/myjobs?username=${username}`, {
           headers: {
-            'Authorization': `Bearer ${token}`, // Include the token in the header
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
         });
         const data = await response.json();
@@ -25,20 +26,21 @@ const MyJobs = () => {
     };
 
     fetchMyJobs();
-  }, [username]);
+  }, []);
 
   return (
     <>
       <Navbar />
       <div className="posted-jobs-container">
-        <h2>My Jobs</h2>
-        {jobs.map((job) =>
-          job.completed ? (
-            <CompletedTaskCard key={job._id} job={job} />
-          ) : (
-            <OngoingTaskCard key={job._id} job={job} />
-          )
-        )}
+          <div className="dashboard-jobs-list">
+            {jobs.map((job) =>
+              job.completed ? (
+                <CompletedTaskCard key={job._id} job={job} />
+              ) : (
+                <OngoingTaskCard key={job._id} job={job} />
+              )
+            )}
+          </div>
       </div>
     </>
   );
