@@ -1,19 +1,66 @@
 import React, { useState, useRef } from 'react';
 
-const uploadImage = () => {
+const uploadImage = ({ onImageChange }) => {
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.substring(0, 5) === "image") {
-      setImage(file);
+  const resizeImage = (file) => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          if (width > 800) {
+            width = 800;
+            height = img.height * (800 / img.width);
+          }
+
+          if (height > 600) {
+            height = 600;
+            width = img.width * (600 / img.height);
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let quality = 0.9;
+          let dataUrl = canvas.toDataURL('image/jpeg', quality);
+          let fileSize = dataUrl.length * (3/4) - (dataUrl.match(/==/g) || []).length; // Approximate file size in bytes
+
+          while (fileSize > 50000 && quality > 0.1) {
+            quality -= 0.1;
+            dataUrl = canvas.toDataURL('image/jpeg', quality);
+            fileSize = dataUrl.length * (3/4) - (dataUrl.match(/==/g) || []).length;
+            console.log('Quality:', quality, 'File size:', fileSize);
+          }
+
+          console.log('Original width:', img.width, 'Original height:', img.height);
+          console.log('Resized width:', width, 'Resized height:', height);
+          console.log('Data URL length:', dataUrl.length);
+          resolve(dataUrl);
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.substring(0, 5) === "image") {
+      const resizedImage = await resizeImage(file);
+      setImage(file);
+      setPreviewUrl(resizedImage);
+      if (onImageChange) {
+        onImageChange(resizedImage);
+      }
     }
   };
 

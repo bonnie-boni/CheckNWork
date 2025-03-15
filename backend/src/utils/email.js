@@ -6,8 +6,8 @@ const sendConfirmationEmail = async (applicantEmail, jobId) => {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'xanensismo@gmail.com',
-        pass: 'YOUR_PASSWORD', // Replace with your actual password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 

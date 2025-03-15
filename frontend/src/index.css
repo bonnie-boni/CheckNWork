@@ -13,6 +13,121 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 1em 0;
+
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+.navbar-logo a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1em;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background-color: #555;
+}
+
+.navbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.navbar-profile a {
+  color: white;
+  text-decoration: none;
+}
+
+.profile-image {
+  width: 2em;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.services-slideshow {
+  display: flex;
+  overflow: hidden;
+  height: 550px; 
+}
+
+.services-slideshow img {
+  max-width: 100%;
+  padding-top: 5px;
+  border-radius: 5em;
+  /* height: 80px; */
+  object-fit: cover;
+  /* animation: both 9s infinite ease-in-out; Adjust duration as needed */
+}
+.services-slideshow img:hover {
+  opacity: 0.2;
+}
+
+@media screen and (min-screen=720px) {
+  
+}
+
+@media screen and (min-screen=350px) {
+  .services-slideshow img{
+    height: 150px;
+    width: 100%;
+    padding: 0%;
+    border-radius: 0%;
+  }
+  .navbar{
+    width: 100%;
+    display: block;
+    font-size: small;
+  }
+  .navbar-links{
+    font-size: 10px;
+  }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  33.33% {
+    transform: translateX(0);
+  }
+  /* First image is fully shown for 33.33% of the time */
+  66.66% {
+    transform: translateX(-100%);
+  }
+   /* Second image is fully shown for 33.33% of the time */
+  100% {
+    transform: translateX(-200%);
+  }
+   /* Third image is fully shown for 33.33% of the time */
+}
+
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -20,6 +135,7 @@ a {
 }
 a:hover {
   color: #535bf2;
+  cursor:crosshair;
 }
 
 body {
@@ -159,4 +275,7 @@ textarea:focus{
 }
 .about{
   padding: 0 2em 0 2em;
+}
+.logins-container{
+
 }

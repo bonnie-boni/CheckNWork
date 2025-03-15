@@ -1,28 +1,38 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const appliedJobSchema = new mongoose.Schema({
-  jobId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
-  applicantEmail: {
+  image: {
     type: String,
-    required: true,
-    trim: true,
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("Email is invalid");
-      }
-    },
+    required: true
   },
-  applicationDate: {
+  category: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String
+  },
+  willingToPay: {
+    type: Number,
+    required: true
+  },
+  location: {
+    type: String
+  },
+  userid: {
+    type: String,
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  datePosted: {
     type: Date,
-    default: Date.now,
-  },
-  // Add any other relevant details here
+    default: Date.now
+  }
 });
 
-const AppliedJob = mongoose.model("AppliedJob", appliedJobSchema);
+const PostedJob = mongoose.model('PostedJob', appliedJobSchema);
 
-export default AppliedJob;
+export default PostedJob;

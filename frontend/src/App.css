@@ -13,3 +13,14 @@
   margin: 0 auto;
   object-fit: cover; /* Maintain aspect ratio */
 }
+.logins-container{
+  justify-content: center;
+  place-self: center;
+  margin: 5%;
+  padding: 5%;
+  border: 1px solid #565c6d;
+  border-radius: 5%;
+}
+#login-input{
+  border: .2px solid #565c6d;
+}

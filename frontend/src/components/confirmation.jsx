@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './Navbar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Confirmation = () => {
-  const [job, setJob] = useState(null);
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const jobDetails = JSON.parse(localStorage.getItem('jobDetails'));
-    if (jobDetails) {
-      setJob(jobDetails);
-    } else {
-      // Redirect to dashboard if no job details are found
-      navigate('/dashboard');
-    }
-  }, [navigate]);
+  const location = useLocation();
+  const job = location.state?.job;
 
   const handleConfirm = async () => {
     if (!email) {
@@ -24,7 +15,27 @@ const Confirmation = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/applications', {
+      // Send email to applicant
+      const emailResponse = await fetch('http://localhost:5000/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: email,
+          subject: `Job Application Confirmation: ${job.category}`,
+          text: `Dear Applicant,\n\nYou have successfully applied for the following job:\n\nCategory: ${job.category}\nDescription: ${job.description}\nWilling to pay: ${job.amount}\nLocation: ${job.location}\n\nThank you for your interest!\n\nSincerely,\nThe Job Board Team`,
+        }),
+      });
+
+      if (emailResponse.ok) {
+        alert('Email sent successfully!');
+      } else {
+        alert('Failed to send email.');
+      }
+
+      // Store application details (optional)
+      const applicationResponse = await fetch('http://localhost:5000/applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,21 +46,22 @@ const Confirmation = () => {
         }),
       });
 
-      if (response.ok) {
+      if (applicationResponse.ok) {
         alert('Application submitted successfully!');
-        navigate('/dashboard');
       } else {
-        const data = await response.json();
+        const data = await applicationResponse.json();
         alert(`Application failed: ${data.error}`);
       }
+
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error submitting application:', error);
       alert('An error occurred while submitting the application.');
     }
   };
 
-  const handleBack = () => {
-    navigate('/dashboard');
+  const handleClose = () => {
+    navigate('/');
   };
 
   if (!job) {
@@ -60,24 +72,23 @@ const Confirmation = () => {
     <>
       <Navbar />
 
-      <div className="confirmation-container">
-        <div className="confirmation-content">
-          <h2>{job.title}</h2>
-          <img src={job.image} alt={job.title} />
-          <p>{job.description}</p>
+      <div className="job-card confirmation-content">
+        <h2>{job.category}</h2>
+        <img className="card-image" src={job.image} alt={job.category} />
+        <p>{job.description}</p>
+        <p>Willing to pay: {job.amount}</p>
+        <p>Location: {job.location}</p>
 
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <button onClick={handleConfirm} disabled={!email}>
-            Confirm
-          </button>
-          <button onClick={handleBack}>Back</button>
-        </div>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br />
+        <button onClick={handleConfirm} disabled={!email}> Confirm </button>
+        <br />
+        <button onClick={handleClose}>Back</button>
       </div>
     </>
   );

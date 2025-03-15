@@ -1,0 +1,47 @@
+.posted-jobs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.completed-task-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.ongoing-task-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.remove-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.completed-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.completed-tag {
+  color: green;
+  font-weight: bold;
+}
+
+.ongoing-tag {
+  color: orange;
+  font-weight: bold;
+}

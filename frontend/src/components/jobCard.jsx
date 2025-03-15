@@ -5,15 +5,7 @@ const JobCard = ({ _id, image, category, description, amount }) => {
   const navigate = useNavigate();
 
   const handleApply = () => {
-    const jobDetails = {
-      _id,
-      image,
-      title: category,
-      description,
-      amount,
-    };
-    localStorage.setItem('jobDetails', JSON.stringify(jobDetails));
-    navigate('/confirmation');
+    navigate('/confirmation', { state: { job: { _id, image, category, description, amount } } });
   };
 
   return (
@@ -26,9 +18,7 @@ const JobCard = ({ _id, image, category, description, amount }) => {
           <h3 className="job-card-content-title">{category}</h3>
           <p className="job-card-content-description">{description}</p>
           <p className="job-card-content-price">ksh {amount}</p>
-          <button className="apply-job" onClick={handleApply}>
-            Apply
-          </button>
+          <button onClick={handleApply}>Apply</button>
         </div>
       </div>
     </div>
