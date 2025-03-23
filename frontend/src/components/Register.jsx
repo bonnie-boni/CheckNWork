@@ -4,6 +4,7 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
@@ -15,7 +16,7 @@ const Register = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, email }),
+        body: JSON.stringify({ username, password, email, mobile }),
       });
 
       const data = await response.json();
@@ -76,11 +77,23 @@ const Register = () => {
           />
         </div>
         <br />
+        <div className="mb-3">
+          <label className="form-label">Mobile Contact</label> <br />
+          <input
+            type="tel"
+            id='mobile-input'
+            className="form-control"
+            placeholder="Mobile Contact"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
+          />
+        </div>
+        <br />
 
         <button type="submit" className="btn btn-primary">Register</button> <br />
         <label> I already have an account ... </label>
         <a href="/login" > Login </a>
-        
+
       </form>
     </div>
   );

@@ -7,6 +7,7 @@ const PostJob = () => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [willingToPay, setWillingToPay] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [location, setLocation] = useState('');
   const [image, setImage] = useState('');
   const navigate = useNavigate();
@@ -19,6 +20,13 @@ const PostJob = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('handleSubmit called');
+
+    if (!localStorage.getItem('token')) {
+      setErrorMessage("You need to login first");
+      return;
+    } else {
+      setErrorMessage("");
+    }
 
     const jobData = {
       category: category,
@@ -65,6 +73,7 @@ const PostJob = () => {
     <>
       <Navbar />
       <div className='job-card post-card'>
+        
         <div>
           <UploadImage onImageChange={handleImageChange} required /> <br />
         </div>
@@ -123,6 +132,8 @@ const PostJob = () => {
             <button type="submit" className='post-job'>
               Post
             </button>
+            <br /> <br />
+            <div style={{ color: 'maroon', fontWeight: 'bolder' }}>{errorMessage}</div>
           </form>
         </div>
       </div>

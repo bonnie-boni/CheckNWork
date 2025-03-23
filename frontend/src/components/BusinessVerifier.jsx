@@ -10,6 +10,13 @@ const BusinessVerifier = () => {
         title="Business Verification"
         width="100%"
         height="600px"
+        className='hidden'
+      />
+      <iframe
+        src="https://www.scamadviser.com/"
+        title="Business Verification"
+        width="100%"
+        height="600px"
       />
     </div>
   );

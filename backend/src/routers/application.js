@@ -4,10 +4,6 @@ const router = express.Router();
 import PostedJob from '../models/postedjobs.js';
 import User from '../models/user.js'; // Import the User model
 import jwt from 'jsonwebtoken'; // Import jsonwebtoken
-import sgMail from '@sendgrid/mail';
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 // Registration endpoint
 router.post('/register', async (req, res) => {
   try {
@@ -90,36 +86,6 @@ router.get('/myjobs', auth, async (req, res) => {
   }
 });
 
-router.post('/send-email', async (req, res) => {
-  try {
-    const { to, subject, text } = req.body;
-
-    const msg = {
-      to: to,
-      from: process.env.EMAIL_USER,
-      subject: subject,
-      text: text,
-    };
-
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log('Email sent');
-        res.send({ message: 'Email sent successfully!' });
-      })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-        console.error('Error details:', error.message);
-        console.error('Error stack:', error.stack);
-        return res.status(500).send({ error: 'Failed to send email', details: error.message });
-      });
-  } catch (error) {
-    console.error('Error sending email:', error);
-    console.error('Error details:', error.message);
-    console.error('Error stack:', error.stack);
-    res.status(500).send({ error: 'Failed to send email', details: error.message });
-  }
-});
 
 router.delete('/myjobs/:id', async (req, res) => {
   try {

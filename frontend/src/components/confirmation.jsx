@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Confirmation = () => {
   const [email, setEmail] = useState('');
+  const [termsAndConditions, setTermsAndConditions] = useState('');
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const job = location.state?.job;
+
+  useEffect(() => {
+    const fetchTermsAndConditions = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/termsAndConditions');
+        if (response.ok) {
+          const data = await response.text();
+          setTermsAndConditions(data);
+        } else {
+          setTermsAndConditions('Failed to load terms and conditions.');
+        }
+      } catch (error) {
+        console.error('Error fetching terms and conditions:', error);
+        setTermsAndConditions('Error loading terms and conditions.');
+      }
+    };
+
+    fetchTermsAndConditions();
+  }, []);
 
   const handleConfirm = async () => {
     if (!email) {
@@ -15,45 +36,28 @@ const Confirmation = () => {
     }
 
     try {
-      // Send email to applicant
-      const emailResponse = await fetch('http://localhost:5000/send-email', {
+      const token = localStorage.getItem('token');
+      // Send job details and terms and conditions to the backend
+      const response = await fetch('http://localhost:5000/sendJobDetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          to: email,
-          subject: `Job Application Confirmation: ${job.category}`,
-          text: `Dear Applicant,\n\nYou have successfully applied for the following job:\n\nCategory: ${job.category}\nDescription: ${job.description}\nWilling to pay: ${job.amount}\nLocation: ${job.location}\n\nThank you for your interest!\n\nSincerely,\nThe Job Board Team`,
-        }),
-      });
-
-      if (emailResponse.ok) {
-        alert('Email sent successfully!');
-      } else {
-        alert('Failed to send email.');
-      }
-
-      // Store application details (optional)
-      const applicationResponse = await fetch('http://localhost:5000/applications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          jobId: job._id, // Assuming job object has an _id field
           applicantEmail: email,
+          jobDetails: job,
+          termsAndConditions: termsAndConditions,
         }),
       });
 
-      if (applicationResponse.ok) {
-        alert('Application submitted successfully!');
+      if (response.ok) {
+        alert('Job details sent successfully!');
       } else {
-        const data = await applicationResponse.json();
-        alert(`Application failed: ${data.error}`);
+        alert('Failed to send job details.');
       }
 
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       console.error('Error submitting application:', error);
       alert('An error occurred while submitting the application.');
@@ -86,7 +90,18 @@ const Confirmation = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <br />
-        <button onClick={handleConfirm} disabled={!email}> Confirm </button>
+
+        <label>
+          <input
+            type="checkbox"
+            checked={agreeToTerms}
+            onChange={(e) => setAgreeToTerms(e.target.checked)}
+          />
+          I agree to the <a href="/about#terms-and-conditions">Terms and Conditions</a>
+        </label>
+        <br />
+
+        <button onClick={handleConfirm} disabled={!email || !agreeToTerms}> Confirm </button>
         <br />
         <button onClick={handleClose}>Back</button>
       </div>
