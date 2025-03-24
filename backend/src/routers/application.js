@@ -4,6 +4,8 @@ const router = express.Router();
 import PostedJob from '../models/postedjobs.js';
 import User from '../models/user.js'; // Import the User model
 import jwt from 'jsonwebtoken'; // Import jsonwebtoken
+import AppliedJob from '../models/applied_jobs.js';
+import auth from '../middleware/auth.js';
 // Registration endpoint
 router.post('/register', async (req, res) => {
   try {
@@ -91,16 +93,13 @@ router.delete('/myjobs/:id', async (req, res) => {
   try {
     const job = await PostedJob.findByIdAndDelete(req.params.id);
     if (!job) {
-      return res.status(404).send({ message: 'Job not found' });
+      return res.status(404).send();
     }
-    res.send({ message: 'Job deleted successfully' });
+    res.send(job);
   } catch (error) {
     res.status(500).send(error);
   }
 });
-
-import CompletedTask from '../models/completed_task.js';
-import auth from '../middleware/auth.js';
 
 router.put('/myjobs/:id/complete', auth, async (req, res) => {
   try {
@@ -148,6 +147,70 @@ router.delete('/myjobs/:id', async (req, res) => {
     res.send(job);
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+// Apply for a job
+router.post('/applyjob', auth, async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    const userId = req.user._id;
+
+    // Check if the user has already applied for this job
+    const existingApplication = await AppliedJob.findOne({ userId, jobId });
+    if (existingApplication) {
+      return res.status(400).json({ message: 'You have already applied for this job' });
+    }
+
+    const appliedJob = new AppliedJob({ userId, jobId });
+    await appliedJob.save();
+
+    res.status(201).json({ message: 'Job application recorded successfully' });
+  } catch (error) {
+    console.error('Error applying for job:', error);
+    res.status(500).json({ message: 'Failed to apply for job' });
+  }
+});
+
+// Get applied jobs for a user
+router.get('/appliedjobs', auth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const appliedJobs = await AppliedJob.find({ userId, isHidden: false });
+
+    // Fetch the job details for each applied job
+    const jobs = await Promise.all(appliedJobs.map(async (appliedJob) => {
+      const job = await PostedJob.findById(appliedJob.jobId);
+      return job;
+    }));
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    console.error('Error getting applied jobs:', error);
+    res.status(500).json({ message: 'Failed to get applied jobs' });
+  }
+});
+
+// Hide an applied job
+router.put('/appliedjobs/:id/hide', auth, async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.user._id;
+
+    // Find the applied job
+    const appliedJob = await AppliedJob.findOne({ userId, jobId });
+    if (!appliedJob) {
+      return res.status(404).json({ message: 'Applied job not found' });
+    }
+
+    // Update the isHidden field
+    appliedJob.isHidden = true;
+    await appliedJob.save();
+
+    res.status(200).json({ message: 'Applied job hidden successfully' });
+  } catch (error) {
+    console.error('Error hiding applied job:', error);
+    res.status(500).json({ message: 'Failed to hide applied job' });
   }
 });
 

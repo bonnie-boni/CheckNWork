@@ -124,4 +124,5 @@ app.get('/oauth2callback', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);
+  console.log(`JWT Secret: ${process.env.JWT_SECRET}`);
 });
