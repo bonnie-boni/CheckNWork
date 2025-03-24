@@ -26,7 +26,7 @@ const Register = () => {
         // Redirect to the login page
         window.location.href = '/login';
       } else {
-        setMessage(<span style={{ color: 'red', fontSize: '12px' }}>{'Registration failed. UserName is taken'}</span>);
+        setMessage(<span style={{ color: 'red', fontSize: '12px' }}>{'Registration failed. UserName is taken / Email is already registered'}</span>);
       }
     } catch (error) {
       console.error('Error registering:', error);
@@ -78,7 +78,7 @@ const Register = () => {
         </div>
         <br />
         <div className="mb-3">
-          <label className="form-label">Mobile Contact</label> <br />
+          <label className="form-label" >Mobile Contact</label> <br />
           <input
             type="tel"
             id='mobile-input'

@@ -1,21 +1,22 @@
 .about-container {
   padding: 20px;
+  color: #99c5ff;
   font-family: Arial, sans-serif;
 }
 
 .about-container h1 {
-  color: #333;
+  color: #99a3b1;
   margin-bottom: 20px;
 }
 
 .about-container h2 {
-  color: #666;
+  color: #9ab2bb;
   margin-top: 20px;
 }
 
 .about-container p {
   line-height: 1.6;
-  color: #555;
+  color: #a8ceff;
 }
 
 .about-container ul {

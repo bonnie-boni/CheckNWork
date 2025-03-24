@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import JobCard from './jobCard';
 import Confirmation from './confirmation';
+import Navbar from './Navbar';
 
 const Jobslist = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
@@ -33,6 +34,7 @@ const Jobslist = () => {
 
   return (
     <>
+     <Navbar />
       <div className="dashboard-jobs">
         <div className="dashboard-jobs-list">
           {appliedJobs.length > 0 ? (

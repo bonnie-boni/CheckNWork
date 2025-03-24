@@ -3,36 +3,38 @@ import Dashboard from "./components/dashboard";
 import Jobslist from "./components/jobslist";
 import PostJob from "./components/postJob";
 import Confirmation from "./components/confirmation";
-import AppliedJob from "./components/appliedJob";
 import About from "./components/about";
 import NotFound from "./components/NotFound";
+import AppliedJob from "./components/appliedJob";
+
 import Login from "./components/Login";
 import Register from "./components/Register";
 import MyJobs from "./components/my_jobs";
 import BusinessVerifier from "./components/BusinessVerifier";
-import { Routes, Route } from 'react-router-dom'; // Import necessary components from react-router-dom
+import Navbar from "./components/Navbar";
+import { Routes, Route } from 'react-router-dom'; // Remove BrowserRouter from here
 
 function App() {
-
   return (
     <>
-      <Routes> {/* Define the routes for the application */}
-        
-        <Route path="/" element={<Dashboard />} /> {/* Route for the Dashboard component */}
-        <Route path="/jobs" element={<Jobslist/>} /> {/* Route for the Jobslist component */}
-        <Route path="/confirmation" element={<Confirmation/>} /> {/* Route for the Jobslist component */}
-        <Route path="/post" element={<PostJob />} /> {/* Route for the PostJob component */}
-        <Route path="/applied-jobs" element={<AppliedJob />} /> {/* Route for the AppliedJob component */}
-        <Route path="/about" element={<About />} /> {/* Route for the About component */}
-        <Route path="/myjobs" element={<MyJobs />} /> {/* Route for the MyJobs component */}
-        <Route path="/login" element={<Login />} /> {/* Route for the Login component */}
-        <Route path="/register" element={<Register />} /> {/* Route for the Register component */}
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/jobs" element={<Jobslist />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/post-job" element={<PostJob />} />
+        <Route path="/applied-jobs" element={<AppliedJob />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/myjobs" element={<MyJobs />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/business-verifier" element={<BusinessVerifier />} />
-        <Route path="*" element={<NotFound />} /> {/* Route for the Not Found component */}
-        
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      <footer>
+        &copy; {new Date().getFullYear()}
+      </footer>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

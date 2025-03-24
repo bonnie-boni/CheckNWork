@@ -11,7 +11,7 @@ const JobCard = ({ _id, image, category, description, amount }) => {
   return (
     <div className="job-card container">
       <div className="card-image">
-        <img src={image} alt="Image" />
+        <img src={image} alt="Image" className='card-image-image' />
       </div>
       <div className="job-card-content">
         <div>

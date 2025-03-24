@@ -1,7 +1,7 @@
 import React from 'react';
 import './Navbar.css';
-import { Link, useNavigate } from 'react-router-dom'; // Import the Link component from react-router-dom
-import { FiLogOut } from 'react-icons/fi'; // Import the sign-out icon
+import { Link, useNavigate } from 'react-router-dom';
+import { FiLogOut } from 'react-icons/fi';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -16,17 +16,20 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
-          <Link className='logo' to="/"> <span>C</span>heck<span>NW</span>ork</Link> {/* Link to the home page */}
+          {/* Updated image path - Make sure the path is correct */}
+          <Link className='logo' to="/">
+            <img src="/src/assets/checknworklogo.png" alt="Logo" className='logo' />
+          </Link>
         </div>
         <div className="navbar-links">
-          <Link to="/business-verifier">B/S Verification</Link> {/* Link to the post job page */}
-          <Link to="/post">Post Job</Link> {/* Link to the post job page */}
-          <Link to="/myjobs">My Jobs</Link> {/* Link to the applied jobs page */}
-          <Link to="/about">About</Link> {/* Link to the about page */}
+          <Link to="/business-verifier">B/S Verification</Link>
+          <Link to="/post-job">Post Job</Link>
+          {/* <Link to="/applied-jobs">Applied Jobs</Link> */}
+          <Link to="/myjobs">My Jobs</Link>
+          <Link to="/about">About</Link>
         </div>
 
         <div className="navbar-profile">
-          {/* Conditionally render either the user's name or a "Sign In" link */}
           {localStorage.getItem('token') ? (
             <>
               <label> Hello {localStorage.getItem('username')} </label>
@@ -36,7 +39,8 @@ const Navbar = () => {
             </>
           ) : (
             <Link to="/login">
-              <img src="src/assets/profile.png" alt="USER-PROFILE" className="profile-image" />
+              {/* Updated image path */}
+              <img src="/src/assets/profile.png" alt="USER-PROFILE" className="profile-image" />
               Sign In
             </Link>
           )}

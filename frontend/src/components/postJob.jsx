@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import UploadImage from './uploadImage';
-import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const PostJob = () => {
   const [category, setCategory] = useState('');
@@ -73,7 +73,7 @@ const PostJob = () => {
     <>
       <Navbar />
       <div className='job-card post-card'>
-        
+
         <div>
           <UploadImage onImageChange={handleImageChange} required /> <br />
         </div>

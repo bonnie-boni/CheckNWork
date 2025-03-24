@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 const BusinessVerifier = () => {
   return (
     <div>
-        <Navbar />
+      <Navbar />
       <iframe
         src="https://www.scamvoid.net/"
         title="Business Verification"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const Confirmation = () => {
   const [email, setEmail] = useState('');
@@ -37,6 +37,10 @@ const Confirmation = () => {
 
     try {
       const token = localStorage.getItem('token');
+       if (!token) {
+        navigate('/login');
+        return;
+      }
       // Send job details and terms and conditions to the backend
       const response = await fetch('http://localhost:5000/sendJobDetails', {
         method: 'POST',
@@ -75,7 +79,6 @@ const Confirmation = () => {
   return (
     <>
       <Navbar />
-
       <div className="job-card confirmation-content">
         <h2>{job.category}</h2>
         <img className="card-image" src={job.image} alt={job.category} />

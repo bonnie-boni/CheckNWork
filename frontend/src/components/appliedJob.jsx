@@ -1,35 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from "./Navbar";
+import { Link } from 'react-router-dom';
+import './posted_jobs.css';
+import Navbar from './Navbar';
 
 const AppliedJob = () => {
-  const [postedJobs, setPostedJobs] = useState([]);
+  const [appliedJobs, setAppliedJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPostedJobs = async () => {
+    const fetchAppliedJobs = async () => {
       try {
-        const response = await fetch('http://localhost:5000/postedjobs'); // Assuming backend is running on port 5000
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5000/appliedjobs`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
         const data = await response.json();
-        console.log('Fetched jobs:', data);
-        setPostedJobs(data);
+        console.log('Fetched applied jobs:', data);
+        setAppliedJobs(data);
+        setLoading(false);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching applied jobs:', error);
+        setLoading(false);
       }
     };
 
-    fetchPostedJobs();
+    fetchAppliedJobs();
   }, []);
 
-  const handleRemoveJob = async (jobId) => {
+  const handleCancelApplication = async (jobId) => {
     try {
-      const response = await fetch(`http://localhost:5000/myjobs/${jobId}`, {
-        method: 'DELETE'
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/appliedjobs/${jobId}/hide`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
       });
 
       if (response.ok) {
         // Remove the job from the state
-        setPostedJobs(postedJobs.filter(job => job._id !== jobId));
+        setAppliedJobs(appliedJobs.filter(job => job._id !== jobId));
       } else {
-        console.error('Failed to remove job');
+        console.error('Failed to cancel application');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -38,22 +55,47 @@ const AppliedJob = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="posted-jobs-container">
-        <h2>My Jobs</h2>
-        <ul>
-          {postedJobs.map(job => (
-            <li key={job._id}>
-              <img src={job.image} alt={job.category} />
-              <h3>{job.category}</h3>
-              <p>{job.description}</p>
-              <p>Willing to pay: {job.willingToPay}</p>
-              <p>Location: {job.location}</p>
-              <button onClick={() => handleRemoveJob(job._id)}>Remove/Cancel</button>
-            </li>
+    <Navbar />
+    <div className="posted-jobs-container">
+      <h2>Jobs You've Applied For</h2>
+      
+      {loading ? (
+        <div className="loading-message">Loading your applications...</div>
+      ) : appliedJobs.length === 0 ? (
+        <div className="no-jobs-message">
+          <p>You haven't applied for any jobs yet</p>
+          <Link to="/jobs" className="post-job-link">Browse Jobs</Link>
+        </div>
+      ) : (
+        <div className="applied-jobs-list">
+          {appliedJobs.map((job) => (
+            <div key={job._id} className="job-card">
+              <div className="job-image">
+                <img src={job.image} alt={job.category} />
+              </div>
+              <div className="job-info">
+                <h3>{job.category}</h3>
+                <p className="job-description">{job.description}</p>
+                <div className="job-details">
+                  <p><strong>Payment:</strong> ${job.willingToPay}</p>
+                  <p><strong>Location:</strong> {job.location}</p>
+                  <p><strong>Status:</strong> <span className="application-status">{job.status || 'Pending'}</span></p>
+                </div>
+                <div className="job-actions">
+                  <button className="view-details-btn">View Details</button>
+                  <button 
+                    className="cancel-application-btn" 
+                    onClick={() => handleCancelApplication(job._id)}
+                  >
+                    Cancel Application
+                  </button>
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
-      </div>
+        </div>
+      )}
+    </div>
     </>
   );
 };
