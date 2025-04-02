@@ -3,6 +3,7 @@ import CompletedTaskCard from './completed_task_card';
 import OngoingTaskCard from './Ongoing_task_card';
 import './posted_jobs.css';
 import Navbar from './Navbar';
+import Footer from './footer';
 
 const PostedJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -34,6 +35,7 @@ const PostedJobs = () => {
           )
         )}
       </div>
+      <Footer />
     </>
   );
 };

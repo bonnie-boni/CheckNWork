@@ -2,6 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  /* min-height: 80%; */
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -12,12 +13,26 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.terms-and-conditions{
+  text-align: center; 
+}
 
+.logins-container{
+  margin: 10em auto;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  max-width: 25em;
+}
 .navbar {
   background-color: #333;
   color: white;
   padding: 1em 0;
 
+}
+
+.hidden{
+  display: none;
 }
 
 .navbar-container {
@@ -29,12 +44,6 @@
   padding: 0 1em;
 }
 
-.navbar-logo a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.5em;
-  font-weight: bold;
-}
 
 .navbar-links {
   display: flex;
@@ -57,6 +66,8 @@
   display: flex;
   align-items: center;
   gap: 1em;
+  position: relative;
+  justify-content: space-between;
 }
 
 .navbar-profile a {
@@ -75,6 +86,11 @@
   overflow: hidden;
   height: 550px; 
 }
+.logo{
+  height: 50px;
+  align-self: center;
+  border-radius: 10px;
+}
 
 .services-slideshow img {
   max-width: 100%;
@@ -88,11 +104,11 @@
   opacity: 0.2;
 }
 
-@media screen and (min-screen=720px) {
+@media screen and (min-width: 720px) {
   
 }
 
-@media screen and (min-screen=350px) {
+@media screen and (min-width: 350px) {
   .services-slideshow img{
     height: 150px;
     width: 100%;
@@ -139,9 +155,14 @@ a:hover {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
+  position: relative;
+}
+.pages{
+  flex: 1;
 }
 
 h1 {
@@ -156,7 +177,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #2f2c52;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -185,12 +206,6 @@ span{
   font-size: 30px;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.logo{
-  font-family: Georgia, 'Times New Roman', Times, serif;
-}
-.logo:hover{
-  backdrop-filter:unset ;
-}
 .Navbar{
   display: flex;
   justify-content: space-between;
@@ -216,57 +231,88 @@ span{
   flex-wrap: wrap;
 }
 .job-card{
-  width: 15em;
+  max-width: 20em;
   background-color:#575c5ce3;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin: 0.5em auto 0 auto;
   padding: 25px;
   border-radius: 2em;
+}
+
+.confirmation-content {
+  width: 80%;
+  margin: 2em auto;
+  padding: 1em;
+}
+
+@media (max-width: 768px) {
+  .confirmation-content {
+    width: 95%;
+    padding: 0.5em;
+  }
 }
 .job-card-image{
   margin: 0%;
   place-self: center;
   justify-items: center;
   height: 200px;
+  width: 100%;
+}
+.card-image{
+  min-width: 320px;
+  /* overflow: hidden; */
+  object-fit: cover;
+  border-radius: 3em 0.5em 3em 0.5em;
 }
 .card-image img{
   width: 100%;
-  max-width: 100%;
-  min-height: 100%;
-  object-fit: contain;
-  border-radius: 3em 0.5em 3em 0.5em;
 }
 .card-image-image{
-  min-height: 450px;
+  min-width: 320px;
+  border-radius: 25px 5px 25px 5px;
+  object-fit: cover;
+  margin: 0 auto;
 }
 .post-card{
-  width: 50%;
+  margin-top: 10px;
+  width: 500px;
 }
-.hidden{
-  display: none;
-}
+
 .job-description{
   place-items: center;
 }
 .image-icon{
   max-width: 20em;
 }
-textarea, input{
+textarea, input {
   resize: none;
   border-radius: .5em;
   border: none;
-  background-color: #242424;
+  background-color: #353434;
   padding: 10px;
-
+  box-sizing: border-box;
+  width: 100%;
 }
-textarea:focus{
-  outline:none;
+
+textarea:focus {
+  outline: none;
   border: none;
 }
-@media screen and (min-screen=720px){
-  .post-card{
+
+@media screen and (min-screen=720px) {
+  .post-card {
     display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .post-card {
+    width: 90%;
+    margin: 0 auto;
+    padding: 1em;
+    flex-direction: column;
   }
 }
 .confirmation-container{
@@ -291,11 +337,7 @@ textarea:focus{
 .notfound-container{
   padding: 10%;
 }
-.logo{
-  height: 50px;
-  align-self: center;
-  border-radius: 10px;
-}
+
 
 /* Add these styles to your existing posted_jobs.css file */
 
@@ -314,7 +356,13 @@ textarea:focus{
   margin-bottom: 15px;
   color: #555;
 }
-
+.post-job{
+  display: flex;
+  flex-direction: column;
+  justify-items: space-between;
+  min-height: 95vh;
+  width: 100%;
+}
 .post-job-link {
   display: inline-block;
   background-color: #4a90e2;
@@ -341,11 +389,96 @@ textarea:focus{
   font-size: 1.2rem;
   color: #555;
 }
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .hamburger-menu {
+    display: block;
+  }
+
+  .navbar-profile {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sign-out-button svg {
+    height: 1.5em;
+  }
+
+.post-card {
+
+    margin: auto;
+    padding: 1em;
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: 2.5em;
+  }
+
+  .worker {
+    padding-left: 0;
+  }
+
+  .confirmation-container {
+    padding: 2em;
+    margin: 5%;
+  }
+}
+
+/* iPhone SE specific styles */
+@media screen and (max-width : 375px) {
+    .dashboard-jobs{
+      padding: 0%;
+      width: 100%;
+    }
+    .dashboard-jobs-list{
+      padding: 0%;
+    }
+    .post-card {
+      display: flex;
+      flex-direction: column;
+      width: 95%;
+      padding: 0.5em;
+    }
+
+    .job-description {
+      padding: 0.5em;
+      margin: 0.5em auto;
+    }
+
+    .job-description label {
+      font-size: 0.9em;
+    }
+
+    textarea, input {
+      padding: 0.5em;
+      font-size: 0.9em;
+    }
+
+    button {
+      font-size: 0.9em;
+      padding: 0.4em 0.8em;
+    }
+
+    iframe {
+      height: 300px; /* Adjust iframe height for iPhone SE */
+    }
+}
 footer{
+  background-color: #535bf2;
   text-align: center;
-  height: 35px;
-  background-color: #213547;
-  margin-top: 20px;
-  padding-top: 10px;
-  align-items: bottom;
+  margin: 0%;
 }

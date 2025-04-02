@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogOut, FiMenu } from 'react-icons/fi';
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSignOut = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     navigate('/login');
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -21,10 +26,15 @@ const Navbar = () => {
             <img src="/src/assets/checknworklogo.png" alt="Logo" className='logo' />
           </Link>
         </div>
-        <div className="navbar-links">
+
+        <button className="hamburger-menu" onClick={toggleMenu}>
+          <FiMenu className='icon' />
+        </button>
+
+        <div className={`navbar-links dropdown-menu ${isOpen ? 'open' : ''}`} data-open={isOpen}>
           <Link to="/business-verifier">B/S Verification</Link>
           <Link to="/post-job">Post Job</Link>
-          {/* <Link to="/applied-jobs">Applied Jobs</Link> */}
+          <Link to="/applied-jobs" className='hidden'>Applied Jobs</Link>
           <Link to="/myjobs">My Jobs</Link>
           <Link to="/about">About</Link>
         </div>
@@ -34,7 +44,7 @@ const Navbar = () => {
             <>
               <label> Hello {localStorage.getItem('username')} </label>
               <button className="sign-out-button" onClick={handleSignOut}>
-                <FiLogOut /> Sign Out
+                <FiLogOut className='icon' /> <span className="sign-out-text">Sign Out</span>
               </button>
             </>
           ) : (

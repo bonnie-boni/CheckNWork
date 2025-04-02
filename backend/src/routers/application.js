@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 const router = express.Router();
 import PostedJob from '../models/postedjobs.js';
@@ -6,10 +7,11 @@ import User from '../models/user.js'; // Import the User model
 import jwt from 'jsonwebtoken'; // Import jsonwebtoken
 import AppliedJob from '../models/applied_jobs.js';
 import auth from '../middleware/auth.js';
+import { sendConfirmationEmail } from '../utils/email.js';
 // Registration endpoint
 router.post('/register', async (req, res) => {
   try {
-    const { username, password, email } = req.body;
+    const { username, password, email, phoneNumber, location } = req.body;
 
     // Check if the username already exists
     const existingUser = await User.findOne({ username });
@@ -18,11 +20,11 @@ router.post('/register', async (req, res) => {
     }
 
     // Create a new user
-    const user = new User({ username, password, email });
+    const user = new User({ username, password, email, phoneNumber, location });
     await user.save(); // Await the save operation
 
     res.status(201).json({ message: 'User registered successfully' });
-  } catch (error)  {
+  } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Failed to register user' });
   }
@@ -211,6 +213,55 @@ router.put('/appliedjobs/:id/hide', auth, async (req, res) => {
   } catch (error) {
     console.error('Error hiding applied job:', error);
     res.status(500).json({ message: 'Failed to hide applied job' });
+  }
+});
+
+router.post('/sendJobDetails', auth, async (req, res) => {
+  try {
+    if (!req.user) {
+      console.error('Error: User not authenticated.');
+      return res.status(401).send({ error: 'User not authenticated.' });
+    }
+
+    const { applicantEmail, jobDetails, termsAndConditions } = req.body;
+
+    // Fetch job details from the database
+    const postedJob = await PostedJob.findById(jobDetails._id);
+    if (!postedJob) {
+      console.error('Error: Job not found.');
+      return res.status(404).send({ error: 'Job not found.' });
+    }
+
+    // Check if postedJob.userid is valid
+    if (!mongoose.Types.ObjectId.isValid(postedJob.userid)) {
+      console.error('Error: Invalid job poster ID.');
+      return res.status(400).send({ error: 'Invalid job poster ID.' });
+    }
+
+    // Fetch job poster's contact information from the User model
+    const jobPoster = await User.findById(postedJob.userid);
+    if (!jobPoster) {
+      console.error('Error: Job poster not found.');
+      return res.status(404).send({ error: 'Job poster not found. User ID: ' + postedJob.userid });
+    }
+
+    const posterContactInfo = {
+      email: jobPoster.email,
+      username: jobPoster.username,
+    };
+
+    const updatedJobDetails = {
+      category: postedJob.category,
+      description: postedJob.description,
+      amount: postedJob.willingToPay,
+      location: postedJob.location,
+    };
+
+    await sendConfirmationEmail(applicantEmail, updatedJobDetails, termsAndConditions, posterContactInfo);
+    res.status(200).send({ message: 'Email sent successfully!' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).send({ error: 'Failed to send email.', details: error.message });
   }
 });
 

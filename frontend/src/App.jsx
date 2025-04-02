@@ -17,22 +17,24 @@ import { Routes, Route } from 'react-router-dom'; // Remove BrowserRouter from h
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/jobs" element={<Jobslist />} />
-        <Route path="/confirmation" element={<Confirmation />} />
-        <Route path="/post-job" element={<PostJob />} />
-        <Route path="/applied-jobs" element={<AppliedJob />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/myjobs" element={<MyJobs />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/business-verifier" element={<BusinessVerifier />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <footer>
-        &copy; {new Date().getFullYear()}
-      </footer>
+      <div className='body'>
+        <div className='pages'>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/jobs" element={<Jobslist />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+            <Route path="/post-job" element={<PostJob />} />
+            <Route path="/applied-jobs" element={<AppliedJob />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/myjobs" element={<MyJobs />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/business-verifier" element={<BusinessVerifier />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+        
+      </div>
     </>
   );
 }

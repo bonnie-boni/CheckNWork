@@ -4,7 +4,8 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [location, setLocation] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
@@ -16,7 +17,7 @@ const Register = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, email, mobile }),
+        body: JSON.stringify({ username, password, email, phoneNumber, location }),
       });
 
       const data = await response.json();
@@ -78,14 +79,29 @@ const Register = () => {
         </div>
         <br />
         <div className="mb-3">
-          <label className="form-label" >Mobile Contact</label> <br />
+          <label className="form-label">Phone Number</label>
+          <br />
           <input
             type="tel"
-            id='mobile-input'
+            id="phoneNumber-input"
             className="form-control"
-            placeholder="Mobile Contact"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
+            placeholder="Phone Number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </div>
+        <br />
+
+        <div className="mb-3">
+          <label className="form-label">Location</label>
+          <br />
+          <input
+            type="text"
+            id="location-input"
+            className="form-control"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
         </div>
         <br />

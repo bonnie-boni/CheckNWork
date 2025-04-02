@@ -17,7 +17,7 @@ const AppliedJob = () => {
             'Content-Type': 'application/json',
           },
         });
-        
+
         const data = await response.json();
         console.log('Fetched applied jobs:', data);
         setAppliedJobs(data);
@@ -55,47 +55,47 @@ const AppliedJob = () => {
 
   return (
     <>
-    <Navbar />
-    <div className="posted-jobs-container">
-      <h2>Jobs You've Applied For</h2>
-      
-      {loading ? (
-        <div className="loading-message">Loading your applications...</div>
-      ) : appliedJobs.length === 0 ? (
-        <div className="no-jobs-message">
-          <p>You haven't applied for any jobs yet</p>
-          <Link to="/jobs" className="post-job-link">Browse Jobs</Link>
-        </div>
-      ) : (
-        <div className="applied-jobs-list">
-          {appliedJobs.map((job) => (
-            <div key={job._id} className="job-card">
-              <div className="job-image">
-                <img src={job.image} alt={job.category} />
-              </div>
-              <div className="job-info">
-                <h3>{job.category}</h3>
-                <p className="job-description">{job.description}</p>
-                <div className="job-details">
-                  <p><strong>Payment:</strong> ${job.willingToPay}</p>
-                  <p><strong>Location:</strong> {job.location}</p>
-                  <p><strong>Status:</strong> <span className="application-status">{job.status || 'Pending'}</span></p>
+      <Navbar />
+      <div className="posted-jobs-container">
+        <h2>Jobs You've Applied For</h2>
+
+        {loading ? (
+          <div className="loading-message">Loading your applications...</div>
+        ) : appliedJobs.length === 0 ? (
+          <div className="no-jobs-message">
+            <p>You haven't applied for any jobs yet</p>
+            <Link to="/jobs" className="post-job-link">Browse Jobs</Link>
+          </div>
+        ) : (
+          <div className="applied-jobs-list">
+            {appliedJobs.map((job) => (
+              <div key={job._id} className="job-card">
+                <div className="job-image">
+                  <img src={job.image} alt={job.category} />
                 </div>
-                <div className="job-actions">
-                  <button className="view-details-btn">View Details</button>
-                  <button 
-                    className="cancel-application-btn" 
-                    onClick={() => handleCancelApplication(job._id)}
-                  >
-                    Cancel Application
-                  </button>
+                <div className="job-info">
+                  <h3>{job.category}</h3>
+                  <p className="job-description">{job.description}</p>
+                  <div className="job-details">
+                    <p><strong>Payment:</strong> ${job.willingToPay}</p>
+                    <p><strong>Location:</strong> {job.location}</p>
+                    <p><strong>Status:</strong> <span className="application-status">{job.status || 'Pending'}</span></p>
+                  </div>
+                  <div className="job-actions">
+                    <button className="view-details-btn">View Details</button>
+                    <button
+                      className="cancel-application-btn"
+                      onClick={() => handleCancelApplication(job._id)}
+                    >
+                      Cancel Application
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 };

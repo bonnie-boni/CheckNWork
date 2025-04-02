@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const JobCard = ({ _id, image, category, description, amount }) => {
+const JobCard = ({ _id, image, category, description, amount, userid }) => {
   const navigate = useNavigate();
 
   const handleApply = () => {
-    navigate('/confirmation', { state: { job: { _id, image, category, description, amount } } });
+    navigate('/confirmation', { state: { job: { _id, image, category, description, amount, userid } } });
   };
 
   return (

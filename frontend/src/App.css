@@ -24,3 +24,29 @@
 #login-input{
   border: .2px solid #565c6d;
 }
+
+@media (max-width: 768px) {
+  .slideshow-image {
+    width: 100%;
+  }
+
+  .logins-container {
+    margin: 2%;
+    padding: 2%;
+  }
+}
+
+@media (max-width: 576px) {
+  .slideshow-image {
+    width: 100%;
+  }
+
+  .logins-container {
+    margin: 1%;
+    padding: 1%;
+  }
+
+  body {
+    font-size: 0.8em;
+  }
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UploadImage from './uploadImage';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import Footer from './footer';
 
 const PostJob = () => {
   const [category, setCategory] = useState('');
@@ -71,72 +72,70 @@ const PostJob = () => {
 
   return (
     <>
+      <div className="post-job"> 
       <Navbar />
       <div className='job-card post-card'>
-
-        <div>
-          <UploadImage onImageChange={handleImageChange} required /> <br />
-        </div>
-
-        <div className="job-description">
-          <form onSubmit={handleSubmit}>
-            <label>
-              Category :
-              <input
-                type="text"
-                name="job-title"
-                id="job-description-title"
-                className="job-description-title"
-                placeholder="dish washing/laundry/moping"
-                required
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
-            </label>
-            <br /> <br />
-            <label>
-              Description :
-              <textarea
-                name=""
-                id="job-description-description"
-                className="job-description-description"
-                cols="25"
-                rows="5"
-                maxLength={100}
-                placeholder="whats should you carry / when should you carry"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Willing To Pay :
-              <input
-                type="number"
-                name="job-title"
-                id="job-description-amount"
-                className="job-description-amount"
-                min={100}
-                placeholder="min ksh 100"
-                required
-                value={willingToPay}
-                onChange={(e) => setWillingToPay(e.target.value)}
-              />
-            </label>
-            <br /> <br />
-            <label>
-              Location :
-              <input type="text" id="" value={location} onChange={(e) => setLocation(e.target.value)} />
-            </label>
-            <br /><br />
-            <button type="submit" className='post-job'>
-              Post
-            </button>
-            <br /> <br />
-            <div style={{ color: 'maroon', fontWeight: 'bolder' }}>{errorMessage}</div>
-          </form>
-        </div>
+       
+              <UploadImage onImageChange={handleImageChange} required className="card-image-image" /> <br />
+                <form onSubmit={handleSubmit}>
+                  <label>
+                    Category :
+                    <input
+                      type="text"
+                      name="job-title"
+                      id="job-description-title"
+                      className="job-description-title"
+                      placeholder="dish washing/laundry/moping"
+                      required
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    />
+                  </label>
+                  <br /> <br />
+                  <label>
+                    Description :
+                    <textarea
+                      name=""
+                      id="job-description-description"
+                      className="job-description-description"
+                      cols="25"
+                      rows="5"
+                      maxLength={150}
+                      placeholder="whats should you carry / when should you carry"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </label>
+                  <br />
+                  <label>
+                    Willing To Pay :
+                    <input
+                      type="number"
+                      name="job-title"
+                      id="job-description-amount"
+                      className="job-description-amount"
+                      min={100}
+                      placeholder="min ksh 100"
+                      required
+                      value={willingToPay}
+                      onChange={(e) => setWillingToPay(e.target.value)}
+                    />
+                  </label>
+                  <br /> <br />
+                  <label>
+                    Location :
+                    <input type="text" id="" value={location} onChange={(e) => setLocation(e.target.value)} />
+                  </label>
+                  <br /><br />
+                  <button type="submit" className='post-job-button'>
+                    Post
+                  </button>
+                  <br /> <br />
+                  <div style={{ color: 'maroon', fontWeight: 'bolder' }}>{errorMessage}</div>
+                </form>
+          </div>
       </div>
+      <Footer />
     </>
   );
 };

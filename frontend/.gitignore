@@ -23,3 +23,16 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+
+node_modules
+
+.logo{
+  height: 50px;
+  align-self: center;
+  border-radius: 10px;
+}
+
+.hidden{
+  display: none;
+}

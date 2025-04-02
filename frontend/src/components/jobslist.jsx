@@ -46,13 +46,14 @@ const Jobslist = () => {
                 description={job.description}
                 amount={job.willingToPay}
                 _id={job._id}
+                userid={job.userid}
                 handleApplyJob={handleApplyJob}
               />
             ))
           ) : (
             <div className="no-jobs-container">
               <p>No jobs found.</p>
-              <Link to="/post" className="post-job-button">
+              <Link to="/post-job" className="post-job-button">
                   <button className="bg-black rounded-full p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2">
                     <path d="M12 5v14M5 12h14" />

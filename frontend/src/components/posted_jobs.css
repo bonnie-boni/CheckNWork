@@ -61,3 +61,31 @@
   color: orange;
   font-weight: bold;
 }
+
+@media (max-width: 768px) {
+  .posted-jobs-container {
+    margin: 0;
+  }
+
+  .completed-task-card,
+  .ongoing-task-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .completed-task-card,
+  .ongoing-task-card {
+    padding: 5px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .remove-button,
+  .completed-button {
+    margin-bottom: 5px;
+  }
+}
